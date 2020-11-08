@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.App.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../:\git\personal\au-stats\.idea\.idea.App\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
