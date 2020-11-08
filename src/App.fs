@@ -83,6 +83,8 @@ let init result =
     } |> urlUpdate result
 
 let processGameBytes (b:byte[]) =
+    let zeroCount = b |> Seq.filter (fun x -> x = 0uy) |> Seq.length
+    console.info (sprintf "Zeros: %i" zeroCount)
     let bodiesReported = BitConverter.ToInt32(b, 0)
     let emergencies = BitConverter.ToInt32(b, 4)
     let tasks = BitConverter.ToInt32(b, 8)
@@ -203,6 +205,8 @@ let render (state: State) (dispatch: Msg -> unit) =
         ("Kills", state.ImpostorKills |> float)
         ("Deaths", state.TimesKilled |> float)
     ]
+    
+    let percentageComplete = (state.GamesFinished |> float) / (state.GamesStarted |> float) * 100.
     
     let percentageTimesImpostor = (state.TimesImpostor |> float) / (state.GamesStarted |> float) * 100.
     
@@ -366,6 +370,40 @@ let render (state: State) (dispatch: Msg -> unit) =
                     prop.text (sprintf "%.2f%%" percentageTimesImpostor)
                     prop.style [
                         style.color.hotPink
+                    ]
+                ]
+                Html.span ")"
+            ]
+        ]
+        
+    let quitter () =
+        Html.h2 [
+            prop.style [
+                style.fontFamily "gaeguregular"
+                style.fontSize (length.rem 3)
+                style.fontWeight.bold
+                style.textAlign.center
+            ]
+            prop.children [
+                Html.span "You have finished "
+                Html.span  [
+                    prop.text (state.GamesFinished)
+                    prop.style [
+                        style.color.cyan
+                    ]
+                ]
+                Html.span " of "
+                Html.span  [
+                    prop.text (state.GamesStarted)
+                    prop.style [
+                        style.color.orange
+                    ]
+                ]
+                Html.span " games ("
+                Html.span  [
+                    prop.text (sprintf "%.2f%%" percentageComplete)
+                    prop.style [
+                        style.color.cyan
                     ]
                 ]
                 Html.span ")"
@@ -568,6 +606,8 @@ let render (state: State) (dispatch: Msg -> unit) =
                             timesImpostor()
                             Divider.divider []
                             killsDeaths()
+                            Divider.divider []
+                            quitter()
                             Divider.divider []
                 ]
             ]
