@@ -178,33 +178,32 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let crewmateWinPercent = (crewmateWins |> float) / (state.TimesCrewmate |> float) * 100.
     
+    // Required because roughviz will crash with zero elements for some reason
+    let filterZeros data =
+        data |> List.filter (fun (_:string, v) -> v <> 0.)
+    
     let impostorWinsBreakdown = [
         ("Kill", state.ImpostorKillWins |> float)
         ("Sabotage", state.ImpostorSabotageWins |> float)
-        ("Vote", state.ImpostorVoteWins |> float)
-    ]
+        ("Vote", state.ImpostorVoteWins |> float) ] |> filterZeros
     
     let impostorWinStats = [
         ("Win", impostorTotalWins |> float)
-        ("Lose", impostorTotalLoses |> float)
-    ]
+        ("Lose", impostorTotalLoses |> float) ] |> filterZeros
     
     let crewmateWinsBreakdown = [
         ("Task", state.CrewmateTaskWins |> float)
-        ("Vote",  state.CrewmateVoteWins |> float)
-    ]
+        ("Vote",  state.CrewmateVoteWins |> float) ]  |> filterZeros
     
     let crewmateWinStats = [
         ("Win", crewmateWins |> float)
-        ("Lose", crewmateLoses |> float)
-    ]
+        ("Lose", crewmateLoses |> float) ] |> filterZeros
     
     let kdRatio = (state.ImpostorKills |> float) / (state.TimesKilled |> float)
     
     let kds = [
         ("Kills", state.ImpostorKills |> float)
-        ("Deaths", state.TimesKilled |> float)
-    ]
+        ("Deaths", state.TimesKilled |> float) ] |> filterZeros
     
     let percentageComplete = (state.GamesFinished |> float) / (state.GamesStarted |> float) * 100.
     
