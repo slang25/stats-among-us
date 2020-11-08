@@ -7,6 +7,7 @@ open Fable.Core
 open Fable.Core.JS
 open Feliz
 open Elmish
+open Fulma.Extensions.Wikiki
 
 type Page = Home | GameStats of string
 
@@ -175,9 +176,20 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let crewmateWinPercent = (crewmateWins |> float) / (state.TimesCrewmate |> float) * 100.
     
+    let impostorWinsBreakdown = [
+        ("Kill", state.ImpostorKillWins |> float)
+        ("Sabotage", state.ImpostorSabotageWins |> float)
+        ("Vote", state.ImpostorVoteWins |> float)
+    ]
+    
     let impostorWinStats = [
         ("Win", impostorTotalWins |> float)
         ("Lose", impostorTotalLoses |> float)
+    ]
+    
+    let crewmateWinsBreakdown = [
+        ("Task", state.CrewmateTaskWins |> float)
+        ("Vote",  state.CrewmateVoteWins |> float)
     ]
     
     let crewmateWinStats = [
@@ -196,7 +208,7 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let susFactor = (state.TimesEjected |> float) / (state.ImpostorKills |> float) * 10.
     
-    let roughBarChart = React.functionComponent(fun () ->
+    let roughBarChart() =
         Html.div [
             prop.className "pie-chart-container"
             prop.style [
@@ -210,7 +222,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     prop.children [
                         RoughViz.pieChart [
                             pieChart.colors [| "cyan"; "hotpink"  |]
-                            pieChart.title (sprintf "Overall Kills/Deaths - %.2f%%" impostorWinPercent)
+                            pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
                             pieChart.data impostorWinStats
                             pieChart.roughness 2
                             pieChart.highlight color.lightGreen
@@ -233,7 +245,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     ]
                 ]
             ]          
-        ])
+        ]
     
     let killsDeaths () =
         Html.div [
@@ -287,11 +299,51 @@ let render (state: State) (dispatch: Msg -> unit) =
                 barChart.highlight color.lightGreen
             ])
         
+    let winsBreakdown() =
+        Html.div [
+            prop.className "pie-chart-container"
+            prop.style [
+                style.display.flex
+            ]
+            prop.children [
+                Html.div [
+                    prop.style [
+                        style.width (length.percent 50)
+                    ]
+                    prop.children [
+                        RoughViz.pieChart [
+                            pieChart.colors [| "cyan"; "hotpink"; "orange"  |]
+                            pieChart.title "Impostor Wins Breakdown"
+                            pieChart.data impostorWinsBreakdown
+                            pieChart.roughness 2
+                            pieChart.highlight color.lightGreen
+                            pieChart.height 350
+                        ]
+                    ]
+                ]
+                Html.div [
+                    prop.style [
+                        style.width (length.percent 50)
+                    ]
+                    prop.children [
+                        RoughViz.pieChart [
+                            pieChart.title "Crewmate Wins Breakdown"
+                            pieChart.data crewmateWinsBreakdown
+                            pieChart.roughness 2
+                            pieChart.highlight color.lightGreen
+                            pieChart.height 350
+                        ]
+                    ]
+                ]
+            ]          
+        ]
+        
     let timesImpostor () =
         Html.h2 [
             prop.style [
                 style.fontFamily "gaeguregular"
                 style.fontSize (length.rem 3)
+                style.fontWeight.bold
                 style.textAlign.center
             ]
             prop.children [
@@ -317,6 +369,30 @@ let render (state: State) (dispatch: Msg -> unit) =
                     ]
                 ]
                 Html.span ")"
+            ]
+        ]
+        
+    let susFactor () =
+        let hoverText = "(Times Ejected / Number of Kills) x 10"
+        Html.h2 [
+            prop.style [
+                style.fontFamily "gaeguregular"
+                style.fontSize (length.rem 3)
+                style.fontWeight.bold
+                style.textAlign.center
+            ]
+            prop.children [
+                Html.span [
+                    prop.text "sus factor: "
+                    prop.alt hoverText
+                ]
+                Html.span  [
+                    prop.text (sprintf "%.2f" susFactor)
+                    prop.alt hoverText
+                    prop.style [
+                        style.color.hotPink
+                    ]
+                ]
             ]
         ]
         
@@ -484,10 +560,15 @@ let render (state: State) (dispatch: Msg -> unit) =
                         // todo this is just a hack for now
                         if state.GamesStarted > 0 then
                             roughBarChart()
-                            //barChart()
+                            Divider.divider []
+                            winsBreakdown()
+                            Divider.divider []
+                            susFactor()
+                            Divider.divider []
                             timesImpostor()
+                            Divider.divider []
                             killsDeaths()
-                            Html.p (sprintf "Sus-Factor: %.2f" susFactor)
+                            Divider.divider []
                 ]
             ]
             Html.footer [

@@ -10,8 +10,10 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
         "bulma": "^0.9.1",
-        "react": "^16.9.0",
-        "react-dom": "^16.9.0",
+        "bulma-divider": "^2.0.1",
+        "bulmaswatch": "^0.8.1",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
         "remotedev": "^0.2.9",
         "rough-viz": "^1.0.6"
     },

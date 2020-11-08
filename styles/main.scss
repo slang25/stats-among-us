@@ -4,7 +4,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 @import "~@fortawesome/fontawesome-free/scss/regular.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
-//@import '~bulma/bulma.sass';
+@import "~bulmaswatch/nuclear/_variables.scss";
+@import '~bulma/bulma.sass';
+@import "~bulmaswatch/nuclear/_overrides.scss";
+@import "~bulma-divider/src/sass/index.sass";
 
 @font-face {
   font-family: 'gaeguregular';
