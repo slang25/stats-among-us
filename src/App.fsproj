@@ -8,6 +8,8 @@
         <Compile Include="RoughVizContrib\RoughViz.fs" />
         <Content Include="RoughVizContrib\createChart.js" />
         <Compile Include="Base62.fs" />
+        <Compile Include="BitConverterExtensions.fs" />
+        <Compile Include="StatsCompression.fs" />
         <Compile Include="App.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>

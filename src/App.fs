@@ -83,8 +83,8 @@ let init result =
     } |> urlUpdate result
 
 let processGameBytes (b:byte[]) =
-    let zeroCount = b |> Seq.filter (fun x -> x = 0uy) |> Seq.length
-    console.info (sprintf "Zeros: %i" zeroCount)
+    let zeros = FSharp.Collections.Array.create (4 - b.Length % 4) 0uy
+    let b = FSharp.Collections.Array.append b zeros
     let bodiesReported = BitConverter.ToInt32(b, 0)
     let emergencies = BitConverter.ToInt32(b, 4)
     let tasks = BitConverter.ToInt32(b, 8)
@@ -128,11 +128,10 @@ open Feliz.RoughViz
 let update (msg: Msg) (state: State) =
     match msg with
     | StatsUploaded bytes ->
-        //let base62 = bytes |> toBase62
-        let encodedStats = bytes |> Convert.ToBase64String
+        let encodedStats = bytes |> App.StatsCompression.compress |> App.Base62.encode
         state, Navigation.newUrl (sprintf "#stats/%s" encodedStats)
     | DisplayStats encodedStats ->
-        let bytes = encodedStats |> Convert.FromBase64String
+        let bytes = encodedStats |> App.Base62.decode |> App.StatsCompression.decompress
         let res = processGameBytes bytes
         { state with
             BodiesReported = res.BodiesReported
@@ -448,7 +447,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     let r = evt.target?result
                     let bytes = r |> createUInt8Array
                     // todo validate file
-                    let statsBytes = bytes.[1..73]
+                    let statsBytes = bytes.[1..72]
                     dispatch (StatsUploaded statsBytes) 
                     ()
             reader.readAsArrayBuffer(file)
