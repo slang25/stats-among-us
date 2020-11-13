@@ -34,7 +34,7 @@ $font-heading: gaeguregular;
   text-transform: uppercase;
 }
 
-.pie-chart-container text {
+.column text {
   fill: white;
 }
 
@@ -125,6 +125,7 @@ html {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  flex-wrap: nowrap;
 }
 
 .app-content {
@@ -133,6 +134,12 @@ html {
 
 footer {
   border-top: white 1px solid;
+  height: 100px;
   display: flex;
   justify-content: center;
+  will-change: transform;
+}
+
+[id^=RoughViz] {
+  color: black;
 }

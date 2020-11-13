@@ -33,9 +33,11 @@ type pieChart =
     static member inline tooltipFontSize(fontSize:float) = unbox<IPieChartProperty> ("tooltipFontSize", unbox<string> fontSize + "px")
     static member inline tooltipFontSize(fontSize: string) = unbox<IPieChartProperty> ("tooltipFontSize", fontSize)
     static member inline roughness(value: int) = unbox<IPieChartProperty> ("roughness", abs value)
-    ///  Whether or not chart is interactive. True by default.
+    /// Whether or not chart is interactive. True by default.
     static member inline interactive (value: bool) = unbox<IPieChartProperty> ("interactive", value)
-    /// Chart simplification. Default is 0.2
+    /// Whether or not to add legend. Default: 'true'.
+    static member inline legend (value: bool) = unbox<IPieChartProperty> ("legend", value)
+    /// Chart simplification. Default is 0.2.
     static member inline simplification(value: float) = unbox<IPieChartProperty> ("simplification", value)
     /// Padding between bars. Default: 0.1.
     static member inline padding(value: float) = unbox<IPieChartProperty>("padding", value)

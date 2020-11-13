@@ -2,11 +2,11 @@ module App
 
 open System
 open Browser
-open Browser.Types
 open Fable.Core
 open Fable.Core.JS
 open Feliz
 open Elmish
+open Fulma
 open Fulma.Extensions.Wikiki
 
 type Page = Home | GameStats of string
@@ -154,6 +154,7 @@ let update (msg: Msg) (state: State) =
             ImpostorSabotageWins = res.ImpostorSabotageWins}, Cmd.none
 
 open Fable.Core.JsInterop
+open Feliz.Bulma
 
 [<Emit("new Uint8Array($0)")>]
 let createUInt8Array(x: 'a) : byte[]  = jsNative
@@ -211,57 +212,41 @@ let render (state: State) (dispatch: Msg -> unit) =
     let susFactor = (state.TimesEjected |> float) / (state.ImpostorKills |> float) * 10.
     
     let roughBarChart() =
-        Html.div [
-            prop.className "pie-chart-container"
-            prop.style [
-                style.display.flex
+        Bulma.columns [
+            Bulma.column [
+                RoughViz.pieChart [
+                    pieChart.colors [| "cyan"; "hotpink"  |]
+                    pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
+                    pieChart.data impostorWinStats
+                    pieChart.roughness 2
+                    pieChart.highlight color.white
+                    pieChart.height 350
+                    pieChart.legend false
+                ]
+                Html.h3 "hey"
             ]
-            prop.children [
-                Html.div [
-                    prop.style [
-                        style.width (length.percent 50)
-                    ]
-                    prop.children [
-                        RoughViz.pieChart [
-                            pieChart.colors [| "cyan"; "hotpink"  |]
-                            pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
-                            pieChart.data impostorWinStats
-                            pieChart.roughness 2
-                            pieChart.highlight color.lightGreen
-                            pieChart.height 350
-                        ]
-                    ]
+            Bulma.column  [
+                RoughViz.pieChart [
+                    pieChart.title (sprintf "Crewmate Wins - %.2f%%" crewmateWinPercent)
+                    pieChart.data crewmateWinStats
+                    pieChart.roughness 2
+                    pieChart.highlight color.white
+                    pieChart.height 350
+                    pieChart.legend false
                 ]
-                Html.div [
-                    prop.style [
-                        style.width (length.percent 50)
-                    ]
-                    prop.children [
-                        RoughViz.pieChart [
-                            pieChart.title (sprintf "Crewmate Wins - %.2f%%" crewmateWinPercent)
-                            pieChart.data crewmateWinStats
-                            pieChart.roughness 2
-                            pieChart.highlight color.lightGreen
-                            pieChart.height 350
-                        ]
-                    ]
-                ]
-            ]          
+            ]
         ]
     
     let killsDeaths () =
-        Html.div [
-            prop.className "pie-chart-container"
-            prop.style [
-                //style.width (length.percent 50)                
-            ]
-            prop.children [
+        Bulma.columns [
+            Bulma.column [
                 RoughViz.pieChart [
                     pieChart.title (sprintf "Kills/Deaths Ratio - %.2f" kdRatio)
                     pieChart.data kds
                     pieChart.roughness 2
-                    pieChart.highlight color.lightGreen
+                    pieChart.highlight color.white
                     pieChart.height 350
+                    pieChart.legend false
                 ]
             ]
         ]
@@ -288,54 +273,27 @@ let render (state: State) (dispatch: Msg -> unit) =
             ("Impostor Sabotage Wins", state.ImpostorSabotageWins |> float)
         ]
     
-    let barChart =
-        React.functionComponent(fun () ->
-            RoughViz.horizontalBarChart [
-                barChart.title "All Stats"
-                barChart.data statsData
-                barChart.roughness 1
-                barChart.color color.lightBlue
-                barChart.stroke color.lightCyan
-                barChart.axisFontSize 18
-                //barChart.fillStyle.crossHatch
-                barChart.highlight color.lightGreen
-            ])
-        
     let winsBreakdown() =
-        Html.div [
-            prop.className "pie-chart-container"
-            prop.style [
-                style.display.flex
-            ]
-            prop.children [
-                Html.div [
-                    prop.style [
-                        style.width (length.percent 50)
-                    ]
-                    prop.children [
-                        RoughViz.pieChart [
-                            pieChart.colors [| "cyan"; "hotpink"; "orange"  |]
-                            pieChart.title "Impostor Wins Breakdown"
-                            pieChart.data impostorWinsBreakdown
-                            pieChart.roughness 2
-                            pieChart.highlight color.lightGreen
-                            pieChart.height 350
-                        ]
-                    ]
+        Bulma.columns [
+            Bulma.column [
+                RoughViz.pieChart [
+                    pieChart.colors [| "cyan"; "hotpink"; "orange"  |]
+                    pieChart.title "Impostor Wins Breakdown"
+                    pieChart.data impostorWinsBreakdown
+                    pieChart.roughness 2
+                    pieChart.highlight color.white
+                    pieChart.height 350
+                    pieChart.legend false
                 ]
-                Html.div [
-                    prop.style [
-                        style.width (length.percent 50)
-                    ]
-                    prop.children [
-                        RoughViz.pieChart [
-                            pieChart.title "Crewmate Wins Breakdown"
-                            pieChart.data crewmateWinsBreakdown
-                            pieChart.roughness 2
-                            pieChart.highlight color.lightGreen
-                            pieChart.height 350
-                        ]
-                    ]
+            ]
+            Bulma.column [
+                RoughViz.pieChart [
+                    pieChart.title "Crewmate Wins Breakdown"
+                    pieChart.data crewmateWinsBreakdown
+                    pieChart.roughness 2
+                    pieChart.highlight color.white
+                    pieChart.height 350
+                    pieChart.legend false
                 ]
             ]          
         ]
@@ -507,23 +465,6 @@ let render (state: State) (dispatch: Msg -> unit) =
                             Html.div [
                                 prop.className "hero-body"
                                 prop.children [
-                                    Html.a [
-                                        prop.href "https://www.buymeacoffee.com/slang"
-                                        prop.target.blank
-                                        prop.style [
-                                            style.float'.right
-                                        ]
-                                        prop.children [
-                                            Html.img [
-                                                prop.src "https://cdn.buymeacoffee.com/buttons/v2/default-green.png"
-                                                prop.alt "Buy Me A Coffee"
-                                                prop.style [
-                                                    style.height (length.px 40)
-                                                    style.width (length.px 144)
-                                                ]
-                                            ]
-                                        ]
-                                    ]
                                     Html.div [
                                         prop.className "container has-text-centered"
                                         prop.children [
@@ -593,29 +534,52 @@ let render (state: State) (dispatch: Msg -> unit) =
                             ]
                         ]
                     | GameStats _ ->
-                        // todo this is just a hack for now
-                        if state.GamesStarted > 0 then
-                            roughBarChart()
-                            Divider.divider []
-                            winsBreakdown()
-                            Divider.divider []
-                            susFactor()
-                            Divider.divider []
-                            timesImpostor()
-                            Divider.divider []
-                            killsDeaths()
-                            Divider.divider []
-                            quitter()
-                            Divider.divider []
+                        Bulma.container [
+                            // todo this is just a hack for now
+                            if state.GamesStarted > 0 then
+                                roughBarChart()
+                                Divider.divider []
+                                winsBreakdown()
+                                Divider.divider []
+                                susFactor()
+                                Divider.divider []
+                                timesImpostor()
+                                Divider.divider []
+                                killsDeaths()
+                                Divider.divider []
+                                quitter()
+                        ]
                 ]
             ]
-            Html.footer [
-                Html.p [
-                    prop.children [
-                        Html.span "Built by "
-                        Html.a [
-                            prop.text "Stu"
-                            prop.href "https://stu.dev"
+            
+            Html.div [
+                prop.style [
+                    style.display.flex
+                    style.alignItems.center
+                    style.justifyContent.center
+                    style.width (length.px 124)
+                    style.height (length.px 64)
+                    style.backgroundColor.white
+                    style.color "#2f313d"
+                    style.borderRadius (length.px 12)
+                    style.position.fixedRelativeToWindow
+                    style.right (length.px 18) 
+                    style.bottom (length.px 18)
+                    style.boxShadow (0, 4, 8, color.rgba(0, 0, 0, 0.4))
+                    style.zIndex 9999
+                    style.fontWeight 600
+                    style.transitionProperty "all 0.2s ease 0s"
+                    style.border (length.px 1, borderStyle.solid, "#bebebe")
+                ]
+                prop.children [
+                    Html.p [
+                        prop.children [
+                            Html.span "Built by "
+                            Html.a [
+                                prop.text "Stu"
+                                prop.href "https://stu.dev"
+                                prop.style [ style.color "#18a9cd" ]
+                            ]
                         ]
                     ]
                 ]

@@ -7,6 +7,7 @@
         <Compile Include="RoughVizContrib\PieChart.fs" />
         <Compile Include="RoughVizContrib\RoughViz.fs" />
         <Content Include="RoughVizContrib\createChart.js" />
+        <Content Include="RoughVizContrib\roughviz.min.js" />
         <Compile Include="Base62.fs" />
         <Compile Include="BitConverterExtensions.fs" />
         <Compile Include="StatsCompression.fs" />
@@ -14,13 +15,13 @@
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Fable.Elmish.Debugger" Version="3.0.3" />
+        <PackageReference Include="Fable.Elmish.Debugger" Version="3.2.0" />
         <PackageReference Include="Fable.Elmish.HMR" Version="4.0.1" />
         <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
         <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
         <PackageReference Include="Fable.Browser.Navigator" Version="1.1.0" />
+        <PackageReference Include="Feliz.Bulma" Version="2.4.0" />
         <PackageReference Include="Fulma.Extensions.Wikiki.Divider" Version="2.0.1" />
-        <PackageReference Include="Feliz" Version="1.13.0" />
-        <PackageReference Include="Zanaptak.TypedCssClasses" Version="0.2.0" />
+        <PackageReference Include="Feliz" Version="1.16.2" />
     </ItemGroup>
 </Project>
