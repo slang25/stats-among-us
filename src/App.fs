@@ -6,7 +6,7 @@ open Fable.Core
 open Fable.Core.JS
 open Feliz
 open Elmish
-open Fulma
+open Feliz.Bulma.Tooltip
 open Fulma.Extensions.Wikiki
 
 type Page = Home | GameStats of string
@@ -211,11 +211,50 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let susFactor = (state.TimesEjected |> float) / (state.ImpostorKills |> float) * 10.
     
+    let tableLegend (data:(string*float) list) (colors: string array) =
+        Html.table [
+            prop.style [
+                style.marginLeft length.auto
+                style.marginRight length.auto
+                style.fontFamily "gaeguregular"
+                style.fontSize (length.rem 2)
+                style.lineHeight (length.em 1.2)
+            ]
+            prop.children [
+                Html.tableBody (data |> List.mapi (fun i (l,v) ->
+                    Html.tableRow [
+                        prop.style [
+                            style.color (colors.[i])
+                        ]
+                        prop.children [
+                            Html.tableCell [
+                                prop.style [
+                                    style.paddingRight (length.px 10)
+                                ]
+                                prop.text l
+                            ]
+                            Html.tableCell [
+                                prop.text v
+                            ]
+                        ]
+                    ]))
+            ]
+        ]
+    let defaultChartColors = [| color.coral
+                                color.skyBlue
+                                "#66c2a5"
+                                color.tan
+                                "#8da0cb"
+                                "#e78ac3"
+                                "#a6d854"
+                                "#ffd92f" |]
+        
     let roughBarChart() =
+        let colors = [| color.cyan; color.hotPink |]
         Bulma.columns [
             Bulma.column [
                 RoughViz.pieChart [
-                    pieChart.colors [| "cyan"; "hotpink"  |]
+                    pieChart.colors colors
                     pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
                     pieChart.data impostorWinStats
                     pieChart.roughness 2
@@ -223,7 +262,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-                Html.h3 "hey"
+                tableLegend impostorWinStats colors
             ]
             Bulma.column  [
                 RoughViz.pieChart [
@@ -234,6 +273,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
+                tableLegend crewmateWinStats defaultChartColors
             ]
         ]
     
@@ -248,6 +288,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
+                tableLegend kds defaultChartColors
             ]
         ]
     
@@ -274,10 +315,11 @@ let render (state: State) (dispatch: Msg -> unit) =
         ]
     
     let winsBreakdown() =
+        let colors = [| "cyan"; "hotpink"; "orange"  |]
         Bulma.columns [
             Bulma.column [
                 RoughViz.pieChart [
-                    pieChart.colors [| "cyan"; "hotpink"; "orange"  |]
+                    pieChart.colors colors
                     pieChart.title "Impostor Wins Breakdown"
                     pieChart.data impostorWinsBreakdown
                     pieChart.roughness 2
@@ -285,6 +327,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
+                tableLegend impostorWinsBreakdown colors
             ]
             Bulma.column [
                 RoughViz.pieChart [
@@ -295,7 +338,8 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-            ]          
+                tableLegend crewmateWinsBreakdown defaultChartColors
+            ]
         ]
         
     let timesImpostor () =
@@ -365,7 +409,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                 Html.span ")"
             ]
         ]
-        
+    
     let susFactor () =
         let hoverText = "(Times Ejected / Number of Kills) x 10"
         Html.h2 [
@@ -378,11 +422,10 @@ let render (state: State) (dispatch: Msg -> unit) =
             prop.children [
                 Html.span [
                     prop.text "sus factor: "
-                    prop.alt hoverText
+                    tooltip.text hoverText
                 ]
                 Html.span  [
                     prop.text (sprintf "%.2f" susFactor)
-                    prop.alt hoverText
                     prop.style [
                         style.color.hotPink
                     ]

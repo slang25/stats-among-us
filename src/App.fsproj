@@ -21,6 +21,7 @@
         <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
         <PackageReference Include="Fable.Browser.Navigator" Version="1.1.0" />
         <PackageReference Include="Feliz.Bulma" Version="2.4.0" />
+        <PackageReference Include="Feliz.Bulma.Tooltip" Version="1.0.1" />
         <PackageReference Include="Fulma.Extensions.Wikiki.Divider" Version="2.0.1" />
         <PackageReference Include="Feliz" Version="1.16.2" />
     </ItemGroup>

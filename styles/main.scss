@@ -8,6 +8,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
 @import '~bulma/bulma.sass';
 @import "~bulmaswatch/nuclear/_overrides.scss";
 @import "~bulma-divider/src/sass/index.sass";
+@import '~bulma-tooltip/src/sass/index';
 
 @font-face {
   font-family: 'gaeguregular';
@@ -130,6 +131,7 @@ html {
 
 .app-content {
   flex: 1;
+  padding-bottom: 90px;
 }
 
 footer {
@@ -142,4 +144,16 @@ footer {
 
 [id^=RoughViz] {
   color: black;
+}
+
+[data-tooltip]:not(.is-loading)::before,
+[data-tooltip]:not(.is-disabled)::before,
+[data-tooltip]:not([disabled])::before {
+  background: cyan;
+}
+
+[data-tooltip]:not(.is-loading)::after,
+[data-tooltip]:not(.is-disabled)::after,
+[data-tooltip]:not([disabled])::after {
+  border-color: cyan transparent transparent transparent;
 }
