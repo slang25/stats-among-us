@@ -252,13 +252,15 @@ let render (state: State) (dispatch: Msg -> unit) =
                                 color.skyBlue
                                 color.tan
                                 color.orange |]
+    
+    let impostorColors = [| color.cyan; color.hotPink; color.orange |]
+    let crewmateColors = [| "#8df580"; color.skyBlue |]    
         
     let winLoseCharts() =
-        let colors = [| color.cyan; color.hotPink |]
         Bulma.columns [
             Bulma.column [
                 RoughViz.pieChart [
-                    pieChart.colors colors
+                    pieChart.colors impostorColors
                     pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
                     pieChart.data impostorWinStats
                     pieChart.roughness 2
@@ -266,10 +268,11 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-                tableLegend impostorWinStats colors
+                tableLegend impostorWinStats impostorColors
             ]
             Bulma.column  [
                 RoughViz.pieChart [
+                    pieChart.colors crewmateColors
                     pieChart.title (sprintf "Crewmate Wins - %.2f%%" crewmateWinPercent)
                     pieChart.data crewmateWinStats
                     pieChart.roughness 2
@@ -277,7 +280,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-                tableLegend crewmateWinStats defaultChartColors
+                tableLegend crewmateWinStats crewmateColors
             ]
         ]
     
@@ -307,23 +310,22 @@ let render (state: State) (dispatch: Msg -> unit) =
             ("Times Killed", state.TimesKilled |> float)
             ("Times Ejected", state.TimesEjected |> float)
             ("Crewmate Streak", state.CrewmateStreak |> float)
-            ("Times Impostor", state.TimesImpostor |> float)
-            ("Times Crewmate", state.TimesCrewmate |> float)
-            ("Games Started", state.GamesStarted |> float)
-            ("Games Finished", state.GamesFinished |> float)
-            ("Crewmate Vote Wins", state.CrewmateVoteWins |> float)
-            ("Crewmate Task Wins", state.CrewmateTaskWins |> float)
-            ("Impostor Vote Wins", state.ImpostorVoteWins |> float)
-            ("Impostor Kill Wins", state.ImpostorKillWins |> float)
-            ("Impostor Sabotage Wins", state.ImpostorSabotageWins |> float)
+            //("Times Impostor", state.TimesImpostor |> float)
+            //("Times Crewmate", state.TimesCrewmate |> float)
+            //("Games Started", state.GamesStarted |> float)
+            //("Games Finished", state.GamesFinished |> float)
+//            ("Crewmate Vote Wins", state.CrewmateVoteWins |> float)
+//            ("Crewmate Task Wins", state.CrewmateTaskWins |> float)
+//            ("Impostor Vote Wins", state.ImpostorVoteWins |> float)
+//            ("Impostor Kill Wins", state.ImpostorKillWins |> float)
+//            ("Impostor Sabotage Wins", state.ImpostorSabotageWins |> float)
         ]
     
     let winsBreakdown() =
-        let colors = [| "cyan"; "hotpink"; "orange"  |]
         Bulma.columns [
             Bulma.column [
                 RoughViz.pieChart [
-                    pieChart.colors colors
+                    pieChart.colors impostorColors
                     pieChart.title "Impostor Wins Breakdown"
                     pieChart.data impostorWinsBreakdown
                     pieChart.roughness 2
@@ -331,10 +333,11 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-                tableLegend impostorWinsBreakdown colors
+                tableLegend impostorWinsBreakdown impostorColors
             ]
             Bulma.column [
                 RoughViz.pieChart [
+                    pieChart.colors crewmateColors
                     pieChart.title "Crewmate Wins Breakdown"
                     pieChart.data crewmateWinsBreakdown
                     pieChart.roughness 2
@@ -342,7 +345,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.height 350
                     pieChart.legend false
                 ]
-                tableLegend crewmateWinsBreakdown defaultChartColors
+                tableLegend crewmateWinsBreakdown crewmateColors
             ]
         ]
         
@@ -446,7 +449,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     style.fontWeight.bold
                     style.textAlign.center
                 ]
-                prop.text "Your full stats breakdown:"
+                prop.text "Your other stats:"
             ]
             tableLegend statsData defaultChartColors
         ]
