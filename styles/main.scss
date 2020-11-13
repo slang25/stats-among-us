@@ -41,10 +41,10 @@ $font-heading: gaeguregular;
 
 // n is number of stars required
 @function multiple-box-shadow($n) {
-  $value: "#{random(2000)}px #{random(2000)}px #FFF";
+  $value: "#{random(2000)}px #{random(3000)}px #FFF";
 
   @for $i from 2 through $n {
-    $value: "#{$value} , #{random(2000)}px #{random(2000)}px #FFF";
+    $value: "#{$value} , #{random(2000)}px #{random(3000)}px #FFF";
   }
 
   @return unquote($value);
@@ -150,6 +150,9 @@ footer {
 [data-tooltip]:not(.is-disabled)::before,
 [data-tooltip]:not([disabled])::before {
   background: cyan;
+  font-family: 'gaeguregular';
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 [data-tooltip]:not(.is-loading)::after,

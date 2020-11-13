@@ -224,12 +224,12 @@ let render (state: State) (dispatch: Msg -> unit) =
                 Html.tableBody (data |> List.mapi (fun i (l,v) ->
                     Html.tableRow [
                         prop.style [
-                            style.color (colors.[i])
+                            style.color (colors.[i % colors.Length])
                         ]
                         prop.children [
                             Html.tableCell [
                                 prop.style [
-                                    style.paddingRight (length.px 10)
+                                    style.paddingRight (length.px 20)
                                 ]
                                 prop.text l
                             ]
@@ -247,9 +247,13 @@ let render (state: State) (dispatch: Msg -> unit) =
                                 "#8da0cb"
                                 "#e78ac3"
                                 "#a6d854"
-                                "#ffd92f" |]
+                                "#ffd92f"
+                                color.coral
+                                color.skyBlue
+                                color.tan
+                                color.orange |]
         
-    let roughBarChart() =
+    let winLoseCharts() =
         let colors = [| color.cyan; color.hotPink |]
         Bulma.columns [
             Bulma.column [
@@ -433,6 +437,20 @@ let render (state: State) (dispatch: Msg -> unit) =
             ]
         ]
         
+    let otherNumbers () =
+        Html.div [
+            Html.h2 [
+                prop.style [
+                    style.fontFamily "gaeguregular"
+                    style.fontSize (length.rem 3)
+                    style.fontWeight.bold
+                    style.textAlign.center
+                ]
+                prop.text "Your full stats breakdown:"
+            ]
+            tableLegend statsData defaultChartColors
+        ]
+        
     let copyButton () =
         Html.button [
             prop.className "button is-boxed"
@@ -580,7 +598,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                         Bulma.container [
                             // todo this is just a hack for now
                             if state.GamesStarted > 0 then
-                                roughBarChart()
+                                winLoseCharts()
                                 Divider.divider []
                                 winsBreakdown()
                                 Divider.divider []
@@ -591,6 +609,8 @@ let render (state: State) (dispatch: Msg -> unit) =
                                 killsDeaths()
                                 Divider.divider []
                                 quitter()
+                                Divider.divider []
+                                otherNumbers()
                         ]
                 ]
             ]
