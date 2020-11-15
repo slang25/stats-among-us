@@ -3,6 +3,8 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="RoughJS\Rough.fs" />
+        <Content Include="RoughJS\createRough.js" />
         <Compile Include="RoughVizContrib\BarChart.fs" />
         <Compile Include="RoughVizContrib\PieChart.fs" />
         <Compile Include="RoughVizContrib\RoughViz.fs" />
@@ -19,6 +21,8 @@
         <PackageReference Include="Fable.Elmish.HMR" Version="4.0.1" />
         <PackageReference Include="Fable.Elmish.Browser" Version="3.0.4" />
         <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
+        <PackageReference Include="Fable.Browser.Svg" Version="2.0.0" />
+        <PackageReference Include="Fable.Browser.Css" Version="2.0.0" />
         <PackageReference Include="Fable.Browser.Navigator" Version="1.1.0" />
         <PackageReference Include="Feliz.Bulma" Version="2.4.0" />
         <PackageReference Include="Feliz.Bulma.Tooltip" Version="1.0.1" />

@@ -146,6 +146,15 @@ footer {
   color: black;
 }
 
+[id^=RoughViz] div {
+  background-color: cyan !important;
+  border-radius: 2px !important;
+  border: 1px cyan !important;
+  font-weight: bold;
+  font-size: 1.5rem !important;
+  padding: 0.5rem 1rem !important;
+}
+
 [data-tooltip]:not(.is-loading)::before,
 [data-tooltip]:not(.is-disabled)::before,
 [data-tooltip]:not([disabled])::before {
