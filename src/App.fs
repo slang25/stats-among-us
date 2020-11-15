@@ -264,7 +264,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.title (sprintf "Impostor Wins - %.2f%%" impostorWinPercent)
                     pieChart.data impostorWinStats
                     pieChart.roughness 2
-                    pieChart.highlight color.white
+                    //pieChart.highlight color.white
                     pieChart.height 350
                     pieChart.legend false
                 ]
@@ -276,7 +276,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.title (sprintf "Crewmate Wins - %.2f%%" crewmateWinPercent)
                     pieChart.data crewmateWinStats
                     pieChart.roughness 2
-                    pieChart.highlight color.white
+                    //pieChart.highlight color.white
                     pieChart.height 350
                     pieChart.legend false
                 ]
@@ -291,7 +291,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.title (sprintf "Kills/Deaths Ratio - %.2f" kdRatio)
                     pieChart.data kds
                     pieChart.roughness 2
-                    pieChart.highlight color.white
+                    //pieChart.highlight color.white
                     pieChart.height 350
                     pieChart.legend false
                 ]
@@ -329,7 +329,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.title "Impostor Wins Breakdown"
                     pieChart.data impostorWinsBreakdown
                     pieChart.roughness 2
-                    pieChart.highlight color.white
+                    //pieChart.highlight color.white
                     pieChart.height 350
                     pieChart.legend false
                 ]
@@ -341,7 +341,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                     pieChart.title "Crewmate Wins Breakdown"
                     pieChart.data crewmateWinsBreakdown
                     pieChart.roughness 2
-                    pieChart.highlight color.white
+                    //pieChart.highlight color.white
                     pieChart.height 350
                     pieChart.legend false
                 ]
@@ -358,28 +358,28 @@ let render (state: State) (dispatch: Msg -> unit) =
                 style.textAlign.center
             ]
             prop.children [
-                Html.span "You have been an impostor "
+                Html.text "You have been an impostor "
                 Html.span  [
                     prop.text (state.TimesImpostor)
                     prop.style [
                         style.color.hotPink
                     ]
                 ]
-                Html.span " times of "
+                Html.text " times of "
                 Html.span  [
                     prop.text (state.GamesStarted)
                     prop.style [
                         style.color.cyan
                     ]
                 ]
-                Html.span " ("
+                Html.text " ("
                 Html.span  [
                     prop.text (sprintf "%.2f%%" percentageTimesImpostor)
                     prop.style [
                         style.color.hotPink
                     ]
                 ]
-                Html.span ")"
+                Html.text ")"
             ]
         ]
         
@@ -392,28 +392,28 @@ let render (state: State) (dispatch: Msg -> unit) =
                 style.textAlign.center
             ]
             prop.children [
-                Html.span "You have finished "
+                Html.text "You have finished "
                 Html.span  [
                     prop.text (state.GamesFinished)
                     prop.style [
                         style.color.cyan
                     ]
                 ]
-                Html.span " of "
+                Html.text " of "
                 Html.span  [
                     prop.text (state.GamesStarted)
                     prop.style [
                         style.color.orange
                     ]
                 ]
-                Html.span " games ("
+                Html.text " games ("
                 Html.span  [
                     prop.text (sprintf "%.2f%%" percentageComplete)
                     prop.style [
                         style.color.cyan
                     ]
                 ]
-                Html.span ")"
+                Html.text ")"
             ]
         ]
     
@@ -519,8 +519,22 @@ let render (state: State) (dispatch: Msg -> unit) =
     let copyButton () =
         Html.button [
             prop.className "button is-boxed"
-            prop.text "Step 1; Copy stats file path"
+            
             prop.onClick (fun _ -> copyToClipboard() )
+            prop.children [
+                Html.span [
+                    prop.className "icon"
+                    prop.style [
+                        style.marginRight (length.em 0.5)
+                    ]
+                    prop.children [
+                        Html.i [
+                            prop.classes [ "fas"; "fa-clone" ]
+                        ]
+                    ]
+                ]
+                Html.text "Step 1: Copy stats file path"
+            ]
         ]
     
     let handleFile (ev: Browser.Types.Event) =
@@ -542,7 +556,7 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let upload () =
         Html.div [
-            prop.className "file is-boxed"
+            prop.className "file"
             prop.style [ style.justifyContent.center ]
             prop.children [
                 Html.label [
@@ -555,7 +569,8 @@ let render (state: State) (dispatch: Msg -> unit) =
                             prop.onChange (fun ev -> handleFile ev)
                          ]
                          Html.span [
-                            prop.className "file-cta"
+                            prop.className "button"
+                            prop.tabIndex 0
                             prop.children [
                                 Html.span [
                                     prop.className "file-icon"
@@ -567,10 +582,35 @@ let render (state: State) (dispatch: Msg -> unit) =
                                 ]
                                 Html.span [
                                     prop.className "file-label"
-                                    prop.text "Step 2; Load stats file"
+                                    prop.text "Step 2: Load stats file"
                                 ]
                             ]
                         ]
+                    ]
+                ]
+            ]
+        ]
+    
+    let welcomeMessage() =
+        Html.article [
+            prop.className ["message"]
+            prop.children [
+                Html.div [
+                    prop.className "message-body"
+                    prop.children [
+                        Html.text "This web app lets you view and share your Among Us stats from Windows, unfortunately loading from mobile is not supported"
+                        Html.br []
+                        Html.text "Your stats are stored in the following location: "
+                        Html.strong """%UserProfile%\AppData\LocalLow\Innersloth\Among Us\playerStats2"""
+                        Html.br []
+                        Html.strong "Step 1: "
+                        Html.text "Click the left button to copy this path to your clipboard"
+                        Html.br []
+                        Html.strong "Step 2: "
+                        Html.text "Click the right button, in the file selector paste in the location of the file and click select"
+                        Html.br []
+                        Html.strong "Step 3: "
+                        Html.text "Profit"
                     ]
                 ]
             ]
@@ -599,7 +639,10 @@ let render (state: State) (dispatch: Msg -> unit) =
                                                 prop.style [
                                                     style.fontSize (length.rem 3)
                                                 ]
-                                                prop.text "Among Us Stats"
+                                                prop.children [
+                                                    Html.text "Among Us Stats"
+                                                ]
+                                                
                                             ]
                                         ]
                                     ]
@@ -609,53 +652,45 @@ let render (state: State) (dispatch: Msg -> unit) =
                     match state.Page with
                     | Home ->
                         Html.div [
-                            prop.style [
-                                style.display.flex
-                            ]
+                            prop.className ["container"; "pb-6"]
+                            prop.children [welcomeMessage()]
+                        ]
+                        Html.div [
+                            prop.className ["container"]
                             prop.children [
-                                Html.div [
-                                    prop.style [
-                                        style.textAlign.center
-                                        style.width (length.percent 50)
-                                    ]
-                                    prop.children [
-                                        Html.div [
-                                            prop.style [
-                                                style.width (length.percent 100)
-                                            ]
-                                            prop.children [
-                                                copyButton()
-                                            ]
+                                Bulma.columns [
+                                    Bulma.column [
+                                        prop.style [
+                                            style.display.flex
+                                            style.flexDirection.column
+                                            style.alignItems.center
                                         ]
-                                        Html.img [
-                                            prop.style [
-                                                style.paddingTop (length.px 30)
+                                        prop.children [
+                                            copyButton()
+                                            Html.img [
+                                                prop.style [
+                                                    style.paddingTop (length.px 30)
+                                                ]
+                                                prop.src "/img/aucyan.png"
                                             ]
-                                            prop.src "/img/aucyan.png"
                                         ]
                                     ]
-                                ]
-                                Html.div [
-                                    prop.style [
-                                        style.textAlign.center
-                                        style.width (length.percent 50)
+                                    Bulma.column [
+                                        prop.style [
+                                            style.display.flex
+                                            style.flexDirection.column
+                                            style.alignItems.center
+                                        ]
+                                        prop.children [
+                                            upload()
+                                            Html.img [
+                                                prop.style [
+                                                    style.paddingTop (length.px 30)
+                                                ]
+                                                prop.src "/img/auorange.png"
+                                            ]
+                                        ]
                                     ]
-                                    prop.children [
-                                        Html.div [
-                                            prop.style [
-                                                style.width (length.percent 100)
-                                            ]
-                                            prop.children [
-                                                upload()
-                                            ]
-                                        ]
-                                        Html.img [
-                                            prop.style [
-                                                style.paddingTop (length.px 30)
-                                            ]
-                                            prop.src "/img/auorange.png"
-                                        ]
-                                    ]    
                                 ]
                             ]
                         ]
@@ -698,12 +733,13 @@ let render (state: State) (dispatch: Msg -> unit) =
                     style.zIndex 9999
                     style.fontWeight 600
                     style.transitionProperty "all 0.2s ease 0s"
-                    style.border (length.px 1, borderStyle.solid, "#bebebe")
+                    style.border (length.px 1, borderStyle.solid, "#d2d2d2")
                 ]
+                
                 prop.children [
                     Html.p [
                         prop.children [
-                            Html.span "Built by "
+                            Html.text "Built by "
                             Html.a [
                                 prop.text "Stu"
                                 prop.href "https://stu.dev"
