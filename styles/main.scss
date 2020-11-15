@@ -134,14 +134,6 @@ html {
   padding-bottom: 90px;
 }
 
-footer {
-  border-top: white 1px solid;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  will-change: transform;
-}
-
 [id^=RoughViz] {
   color: black;
 }
@@ -161,7 +153,7 @@ footer {
   background: cyan;
   font-family: 'gaeguregular';
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 [data-tooltip]:not(.is-loading)::after,
