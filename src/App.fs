@@ -7,7 +7,6 @@ open Fable.Core.JS
 open Feliz
 open Elmish
 open Feliz.Bulma.Tooltip
-open Fulma.Extensions.Wikiki
 
 type Page = Home | GameStats of string
 
@@ -538,12 +537,15 @@ let render (state: State) (dispatch: Msg -> unit) =
         ]
     
     let handleFile (file: Browser.Types.File) =
-        try
-            // TODO Validate file
-            let statsBytes = file.slice(1,73) |> createUInt8Array
-            dispatch (StatsUploaded statsBytes)
-        with
-        | ex -> ()
+        async {
+            try
+                // TODO Validate file
+                let! arrayBuffer = Async.AwaitPromise(file.slice(1,73)?arrayBuffer())
+                let statsBytes = createUInt8Array arrayBuffer
+                dispatch (StatsUploaded statsBytes)
+            with
+            | ex -> ()
+        } |> Async.StartImmediate
         
     
     let upload () =
