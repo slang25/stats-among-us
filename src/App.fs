@@ -537,19 +537,11 @@ let render (state: State) (dispatch: Msg -> unit) =
             ]
         ]
     
-    let handleFile (ev: Browser.Types.Event) =
+    let handleFile (file: Browser.Types.File) =
         try
-            let reader = FileReader.Create()
-            let file = ev.target?files?(0)
-            reader.onload <- fun evt ->
-                    let r = evt.target?result
-                    let bytes = r |> createUInt8Array
-                    // todo validate file
-                    let statsBytes = bytes.[1..72]
-                    dispatch (StatsUploaded statsBytes) 
-                    ()
-            reader.readAsArrayBuffer(file)
-            ()
+            // TODO Validate file
+            let statsBytes = file.slice(1,72) |> createUInt8Array
+            dispatch (StatsUploaded statsBytes)
         with
         | ex -> ()
         
@@ -566,7 +558,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                             prop.className "file-input"
                             prop.type' "file"
                             prop.name "resume"
-                            prop.onChange (fun ev -> handleFile ev)
+                            prop.onChange handleFile
                          ]
                          Html.span [
                             prop.className "button"
