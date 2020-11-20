@@ -540,7 +540,7 @@ let render (state: State) (dispatch: Msg -> unit) =
     let handleFile (file: Browser.Types.File) =
         try
             // TODO Validate file
-            let statsBytes = file.slice(1,72) |> createUInt8Array
+            let statsBytes = file.slice(1,73) |> createUInt8Array
             dispatch (StatsUploaded statsBytes)
         with
         | ex -> ()
