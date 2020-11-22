@@ -27,6 +27,9 @@
         <PackageReference Include="Feliz.Bulma" Version="2.4.0" />
         <PackageReference Include="Feliz.Bulma.Tooltip" Version="1.0.1" />
         <PackageReference Include="Fulma.Extensions.Wikiki.Divider" Version="2.0.1" />
-        <PackageReference Include="Feliz" Version="1.16.2" />
+        <PackageReference Include="Feliz" Version="1.17.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="FSharp.Core" Version="4.7.2" />
     </ItemGroup>
 </Project>
