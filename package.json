@@ -1,7 +1,9 @@
 {
     "private": true,
     "scripts": {
+        "prestart": "dotnet tool restore",
         "start": "dotnet fable watch ./src --run webpack-dev-server",
+        "prebuild": "dotnet tool restore",
         "build": "dotnet fable ./src && webpack",
         "test:live": "dotnet fable watch tests --run webpack-dev-server --config ./webpack.tests.js",
         "postinstall": "patch-package"
