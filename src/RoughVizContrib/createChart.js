@@ -1,4 +1,4 @@
-import RoughViz from 'rough-viz/dist/roughviz.min'
+import * as RoughViz from '@inocan/rough-viz'
 
 export const createBarChart = (config) => new RoughViz.Bar(config)
 
