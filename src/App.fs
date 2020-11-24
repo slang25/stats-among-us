@@ -215,7 +215,7 @@ let render (state: State) (dispatch: Msg -> unit) =
             prop.style [
                 style.marginLeft length.auto
                 style.marginRight length.auto
-                style.fontFamily "gaeguregular"
+                style.fontFamily Constants.mainFont
                 style.fontSize (length.rem 2)
                 style.lineHeight (length.em 1.2)
             ]
@@ -351,9 +351,8 @@ let render (state: State) (dispatch: Msg -> unit) =
     let timesImpostor () =
         Html.h2 [
             prop.style [
-                style.fontFamily "gaeguregular"
+                style.fontFamily Constants.mainFont
                 style.fontSize (length.rem 3)
-                style.fontWeight.bold
                 style.textAlign.center
             ]
             prop.children [
@@ -385,9 +384,8 @@ let render (state: State) (dispatch: Msg -> unit) =
     let quitter () =
         Html.h2 [
             prop.style [
-                style.fontFamily "gaeguregular"
-                style.fontSize (length.rem 3)
-                style.fontWeight.bold
+                style.fontFamily Constants.mainFont
+                style.fontSize (length.rem 3) 
                 style.textAlign.center
             ]
             prop.children [
@@ -420,9 +418,8 @@ let render (state: State) (dispatch: Msg -> unit) =
         let hoverText = "(Times Ejected / Number of Kills) x 10"
         Html.h2 [
             prop.style [
-                style.fontFamily "gaeguregular"
+                style.fontFamily Constants.mainFont
                 style.fontSize (length.rem 3)
-                style.fontWeight.bold
                 style.textAlign.center
             ]
             prop.children [
@@ -443,7 +440,7 @@ let render (state: State) (dispatch: Msg -> unit) =
         Html.div [
             Html.h2 [
                 prop.style [
-                    style.fontFamily "gaeguregular"
+                    style.fontFamily Constants.mainFont
                     style.fontSize (length.rem 3)
                     style.fontWeight.bold
                     style.textAlign.center
