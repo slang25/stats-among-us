@@ -13,7 +13,6 @@
         <Compile Include="Base62.fs" />
         <Compile Include="BitConverterExtensions.fs" />
         <Compile Include="StatsCompression.fs" />
-        <Compile Include="Constants.fs" />
         <Compile Include="Components.fs" />
         <Compile Include="App.fs" />
         <Compile Include="Main.fs" />
