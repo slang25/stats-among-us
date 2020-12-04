@@ -411,7 +411,7 @@ let render (state: State) (dispatch: Msg -> unit) =
         let hoverText = "(Times Ejected / Number of Kills) x 10"
         let twitterText = encodeURIComponent (sprintf "My Among Us #susfactor is %.2f, check out the rest of my stats here!" susFactor)
         let escapedUrl = encodeURIComponent window.location.href
-        let twitterShareHref = sprintf "https://twitter.com/intent/tweet/?text=%s&amp;url=%s" twitterText escapedUrl
+        let twitterShareHref = sprintf "https://twitter.com/intent/tweet/?text=%s&url=%s" twitterText escapedUrl
         Html.div [
             prop.children [
                 Html.div [
