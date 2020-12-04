@@ -309,15 +309,6 @@ let render (state: State) (dispatch: Msg -> unit) =
             ("Times Killed", state.TimesKilled |> float)
             ("Times Ejected", state.TimesEjected |> float)
             ("Crewmate Streak", state.CrewmateStreak |> float)
-            //("Times Impostor", state.TimesImpostor |> float)
-            //("Times Crewmate", state.TimesCrewmate |> float)
-            //("Games Started", state.GamesStarted |> float)
-            //("Games Finished", state.GamesFinished |> float)
-//            ("Crewmate Vote Wins", state.CrewmateVoteWins |> float)
-//            ("Crewmate Task Wins", state.CrewmateTaskWins |> float)
-//            ("Impostor Vote Wins", state.ImpostorVoteWins |> float)
-//            ("Impostor Kill Wins", state.ImpostorKillWins |> float)
-//            ("Impostor Sabotage Wins", state.ImpostorSabotageWins |> float)
         ]
     
     let winsBreakdown() =
@@ -416,24 +407,72 @@ let render (state: State) (dispatch: Msg -> unit) =
             ]
         ]
     
-    let susFactor () =
+    let susFactorPart () =
         let hoverText = "(Times Ejected / Number of Kills) x 10"
-        Html.h2 [
-            prop.style [
-                style.fontFamily "gaeguregular"
-                style.fontSize (length.rem 3)
-                style.fontWeight.bold
-                style.textAlign.center
-            ]
+        let twitterText = encodeURIComponent (sprintf "My Among Us #susfactor is %.2f, check out the rest of my stats here!" susFactor)
+        let escapedUrl = encodeURIComponent window.location.href
+        let twitterShareHref = sprintf "https://twitter.com/intent/tweet/?text=%s&amp;url=%s" twitterText escapedUrl
+        Html.div [
             prop.children [
-                Html.span [
-                    prop.text "sus factor: "
-                    tooltip.text hoverText
+                Html.div [
+                    prop.children [
+                        Html.h2 [
+                            prop.style [
+                                style.fontFamily "gaeguregular"
+                                style.fontSize (length.rem 3)
+                                style.fontWeight.bold
+                                style.textAlign.center
+                            ]
+                            prop.children [
+                                Html.span [
+                                    prop.text "sus factor: "
+                                    tooltip.text hoverText
+                                ]
+                                Html.span [
+                                    prop.text (sprintf "%.2f" susFactor)
+                                    prop.style [
+                                        style.color.hotPink
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
-                Html.span  [
-                    prop.text (sprintf "%.2f" susFactor)
+                Html.div [
                     prop.style [
-                        style.color.hotPink
+                        style.textAlign.center
+                    ]
+                    prop.children[
+                        Html.a [                    
+                            prop.ariaLabel "Share on Twitter"
+                            prop.className "resp-sharing-button__link"
+                            prop.href twitterShareHref
+                            prop.rel "noopener"
+                            prop.target "_blank"
+                            prop.children [
+                                Html.div [
+                                    prop.classes [ "resp-sharing-button"; "resp-sharing-button--twitter"; "resp-sharing-button--large" ]
+                                    prop.children [
+                                        Html.div [
+                                            prop.ariaHidden true
+                                            prop.classes [ "resp-sharing-button__icon"; "resp-sharing-button__icon--solid" ]
+                                            prop.children [
+                                                Html.svg [
+                                                    prop.viewBox (0, 0, 24, 24)
+                                                    prop.xmlns "http://www.w3.org/2000/svg"
+                                                    prop.children [
+                                                        Html.path [
+                                                            prop.d "M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z"
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                        Html.text "Share on Twitter"
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
@@ -633,11 +672,12 @@ let render (state: State) (dispatch: Msg -> unit) =
                         Bulma.container [
                             // todo this is just a hack for now
                             if state.GamesStarted > 0 then
+                                Components.roughDivider()
+                                susFactorPart()
+                                Components.roughDivider()
                                 winLoseCharts()
                                 Components.roughDivider()
                                 winsBreakdown()
-                                Components.roughDivider()
-                                susFactor()
                                 Components.roughDivider()
                                 timesImpostor()
                                 Components.roughDivider()
