@@ -457,7 +457,7 @@ let render (state: State) (dispatch: Msg -> unit) =
                                 Html.span [
                                     prop.text (sprintf "%.2f" averageImpostorKills)
                                     prop.style [
-                                        style.color.hotPink
+                                        style.color.coral
                                     ]
                                 ]
                             ]
