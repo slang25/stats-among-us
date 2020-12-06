@@ -484,6 +484,10 @@ let render (state: State) (dispatch: Msg -> unit) =
                                             prop.classes [ "resp-sharing-button__icon"; "resp-sharing-button__icon--solid" ]
                                             prop.children [
                                                 Html.svg [
+                                                    prop.style [
+                                                        style.width (length.em 1)
+                                                        style.height (length.em 1)
+                                                    ]
                                                     prop.viewBox (0, 0, 24, 24)
                                                     prop.xmlns "http://www.w3.org/2000/svg"
                                                     prop.children [
