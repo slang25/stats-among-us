@@ -208,7 +208,8 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let percentageTimesImpostor = (state.TimesImpostor |> float) / (state.GamesStarted |> float) * 100.
     
-    let susFactor = (state.TimesEjected |> float) / (state.ImpostorKills |> float) * 10.
+    let susFactor = (state.TimesEjected |> float) / (state.TimesImpostor |> float) * 5.
+    let averageImpostorKills = (state.ImpostorKills |> float) / (state.TimesImpostor |> float)
     
     let tableLegend (data:(string*float) list) (colors: string array) =
         Html.table [
@@ -408,7 +409,8 @@ let render (state: State) (dispatch: Msg -> unit) =
         ]
     
     let susFactorPart () =
-        let hoverText = "(Times Ejected / Number of Kills) x 10"
+        let susHoverText = "(Times Ejected / Times Impostor) x 5"
+        let killsHoverText = "Times Killed / Times Impostor"
         let twitterText = encodeURIComponent (sprintf "My Among Us #susfactor is %.2f, check out the rest of my stats here!" susFactor)
         let escapedUrl = encodeURIComponent window.location.href
         let twitterShareHref = sprintf "https://twitter.com/intent/tweet/?text=%s&url=%s" twitterText escapedUrl
@@ -426,10 +428,34 @@ let render (state: State) (dispatch: Msg -> unit) =
                             prop.children [
                                 Html.span [
                                     prop.text "sus factor: "
-                                    tooltip.text hoverText
+                                    tooltip.text susHoverText
                                 ]
                                 Html.span [
                                     prop.text (sprintf "%.2f" susFactor)
+                                    prop.style [
+                                        style.color.hotPink
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+                Html.div [
+                    prop.children [
+                        Html.h2 [
+                            prop.style [
+                                style.fontFamily "gaeguregular"
+                                style.fontSize (length.rem 3)
+                                style.fontWeight.bold
+                                style.textAlign.center
+                            ]
+                            prop.children [
+                                Html.span [
+                                    prop.text "average impostor kills: "
+                                    tooltip.text killsHoverText
+                                ]
+                                Html.span [
+                                    prop.text (sprintf "%.2f" averageImpostorKills)
                                     prop.style [
                                         style.color.hotPink
                                     ]
