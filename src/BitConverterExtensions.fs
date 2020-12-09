@@ -1,4 +1,4 @@
-namespace App.BitConverterExtensions
+namespace BitConverterExtensions
 
 module BitConverter = 
     let pow2 y = 1 <<< y

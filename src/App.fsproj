@@ -5,6 +5,7 @@
     <ItemGroup>
         <Compile Include="RoughJS\Rough.fs" />
         <Content Include="RoughJS\createRough.js" />
+        <Compile Include="Color\Color.fs" />
         <Compile Include="Base62.fs" />
         <Compile Include="BitConverterExtensions.fs" />
         <Compile Include="StatsCompression.fs" />
@@ -20,6 +21,7 @@
         <PackageReference Include="Fable.Browser.Svg" Version="2.0.0" />
         <PackageReference Include="Fable.Browser.Css" Version="2.0.0" />
         <PackageReference Include="Fable.Browser.Navigator" Version="1.1.0" />
+        <PackageReference Include="Fable.Promise" Version="2.1.0" />
         <PackageReference Include="Feliz.Bulma" Version="2.4.0" />
         <PackageReference Include="Feliz.Bulma.Tooltip" Version="1.0.1" />
         <PackageReference Include="Fulma.Extensions.Wikiki.Divider" Version="2.0.1" />

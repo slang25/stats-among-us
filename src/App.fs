@@ -127,10 +127,10 @@ open Feliz.RoughViz
 let update (msg: Msg) (state: State) =
     match msg with
     | StatsUploaded bytes ->
-        let encodedStats = bytes |> App.StatsCompression.compress |> App.Base62.encode
+        let encodedStats = bytes |> StatsCompression.compress |> Base62.encode
         state, Navigation.newUrl (sprintf "#stats/%s" encodedStats)
     | DisplayStats encodedStats ->
-        let bytes = encodedStats |> App.Base62.decode |> App.StatsCompression.decompress
+        let bytes = encodedStats |> Base62.decode |> StatsCompression.decompress
         let res = processGameBytes bytes
         { state with
             BodiesReported = res.BodiesReported
@@ -410,7 +410,7 @@ let render (state: State) (dispatch: Msg -> unit) =
     
     let susFactorPart () =
         let susHoverText = "(Times Ejected / Times Impostor) x 5"
-        let killsHoverText = "Times Killed / Times Impostor"
+        let killsHoverText = "Impostor Kills / Times Impostor"
         let twitterText = encodeURIComponent (sprintf "My Among Us #susfactor is %.2f, check out the rest of my stats here!" susFactor)
         let escapedUrl = encodeURIComponent window.location.href
         let twitterShareHref = sprintf "https://twitter.com/intent/tweet/?text=%s&url=%s" twitterText escapedUrl
@@ -655,6 +655,16 @@ let render (state: State) (dispatch: Msg -> unit) =
                     ]
                     match state.Page with
                     | Home ->
+//                        Html.div [
+//                            prop.className "avatar"
+//                            prop.style [
+//                                style.width (length.px 100)
+//                                style.height (length.px 100)
+//                            ]
+//                            prop.children [
+//                                Components.Avatar()
+//                            ]
+//                        ]
                         Html.div [
                             prop.className ["container"; "pb-6"]
                             prop.children [welcomeMessage()]
@@ -702,21 +712,21 @@ let render (state: State) (dispatch: Msg -> unit) =
                         Bulma.container [
                             // todo this is just a hack for now
                             if state.GamesStarted > 0 then
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 susFactorPart()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 winLoseCharts()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 winsBreakdown()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 timesImpostor()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 killsDeaths()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 quitter()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                                 otherNumbers()
-                                Components.roughDivider()
+                                Components.RoughDivider()
                         ]
                 ]
             ]
@@ -754,4 +764,6 @@ let render (state: State) (dispatch: Msg -> unit) =
                     ]
                 ]
             ]
+            
+            
     ]]

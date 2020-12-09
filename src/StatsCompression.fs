@@ -1,5 +1,5 @@
-module App.StatsCompression
-open App.BitConverterExtensions
+module StatsCompression
+open BitConverterExtensions
 
 let compress input =
         let nonEmptyByteMap = input |> Array.map (fun b -> b <> 0uy) |> BitConverter.FromBooleans

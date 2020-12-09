@@ -1,4 +1,4 @@
-module App.Base62
+module Base62
 open System
 open System.Numerics
 open System.Text
